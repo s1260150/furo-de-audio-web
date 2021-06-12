@@ -101,11 +101,7 @@ class _SearchBarState extends State<SearchBar>
     super.initState();
 
     _animController =
-<<<<<<< HEAD
-        AnimationController(duration: Duration(milliseconds: 150), vsync: this);
-=======
         AnimationController(duration: Duration(milliseconds: 200), vsync: this);
->>>>>>> dev
 
     final curvedAnimation =
         CurvedAnimation(parent: _animController, curve: Curves.ease);
