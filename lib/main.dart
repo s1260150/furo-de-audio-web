@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(
-      MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            primaryTextTheme: TextTheme(title: TextStyle(color: Colors.black))),
-        home: MyApp(),
-      ),
-    );
+void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
   @override
@@ -21,56 +14,69 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text('furo-de-audio'),
-        actions: [
-          SearchBar(),
-          IconButton(
-            icon: const Icon(Icons.person, color: Colors.black),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.library_music),
-            title: Text('Library'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            title: Text('Settings'),
-          ),
-        ],
-        onTap: (int index) {
-          setState(
-            () {
-              _navIndex = index;
-              _label = _titles[index];
-            },
-          );
+    return GestureDetector(
+        onTap: () {
+          final FocusScopeNode currentScope = FocusScope.of(context);
+          if (!currentScope.hasPrimaryFocus && currentScope.hasFocus) {
+            FocusManager.instance.primaryFocus!.unfocus();
+          }
         },
-        currentIndex: _navIndex,
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: Center(
-              child: Text(
-                _label,
-                style: TextStyle(fontSize: 24.0),
-              ),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+              primaryTextTheme:
+                  TextTheme(title: TextStyle(color: Colors.black))),
+          home: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              title: Text('furo-de-audio'),
+              actions: [
+                SearchBar(),
+                IconButton(
+                  icon: const Icon(Icons.person, color: Colors.black),
+                  onPressed: () {},
+                ),
+              ],
             ),
-          )
-        ],
-      ),
-    );
+            bottomNavigationBar: BottomNavigationBar(
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  title: Text('Home'),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.library_music),
+                  title: Text('Library'),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.settings),
+                  title: Text('Settings'),
+                ),
+              ],
+              onTap: (int index) {
+                setState(
+                  () {
+                    _navIndex = index;
+                    _label = _titles[index];
+                  },
+                );
+              },
+              currentIndex: _navIndex,
+            ),
+            body: Column(
+              children: <Widget>[
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      _label,
+                      style: TextStyle(fontSize: 24.0),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ));
   }
 }
 
@@ -95,10 +101,14 @@ class _SearchBarState extends State<SearchBar>
     super.initState();
 
     _animController =
+<<<<<<< HEAD
         AnimationController(duration: Duration(milliseconds: 150), vsync: this);
+=======
+        AnimationController(duration: Duration(milliseconds: 200), vsync: this);
+>>>>>>> dev
 
     final curvedAnimation =
-        CurvedAnimation(parent: _animController, curve: Curves.easeOutSine);
+        CurvedAnimation(parent: _animController, curve: Curves.ease);
 
     _animation = Tween<double>(begin: 0, end: 150).animate(curvedAnimation)
       ..addListener(() {
@@ -124,8 +134,8 @@ class _SearchBarState extends State<SearchBar>
         width: 200,
         height: 50,
         child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-          Visibility(
-            visible: !_isFocus,
+          Opacity(
+            opacity: 1.0 - _animation.value / 150,
             child: Container(
                 width: 50,
                 child: IconButton(
@@ -140,19 +150,10 @@ class _SearchBarState extends State<SearchBar>
             height: 50,
             child: Padding(
                 padding: const EdgeInsets.only(right: 10.0, bottom: 5.0),
-                child: GestureDetector(
-                    onTap: () {
-                      final FocusScopeNode currentScope =
-                          FocusScope.of(context);
-                      if (!currentScope.hasPrimaryFocus &&
-                          currentScope.hasFocus) {
-                        FocusManager.instance.primaryFocus!.unfocus();
-                      }
-                    },
-                    child: TextField(
-                      focusNode: _focusNode,
-                      style: TextStyle(color: Colors.black),
-                    ))),
+                child: TextField(
+                  focusNode: _focusNode,
+                  style: TextStyle(color: Colors.black),
+                )),
           ),
         ]));
   }
