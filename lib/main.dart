@@ -136,9 +136,11 @@ class _SearchBarState extends State<SearchBar>
                 width: 50,
                 child: IconButton(
                   icon: const Icon(Icons.search, color: Colors.black),
-                  onPressed: () {
-                    _focusNode.requestFocus();
-                  },
+                  onPressed: _isFocus
+                      ? null
+                      : () {
+                          _focusNode.requestFocus();
+                        },
                 )),
           ),
           Container(
