@@ -95,7 +95,7 @@ class _SearchBarState extends State<SearchBar>
     super.initState();
 
     _animController =
-        AnimationController(duration: Duration(milliseconds: 300), vsync: this);
+        AnimationController(duration: Duration(milliseconds: 150), vsync: this);
 
     final curvedAnimation =
         CurvedAnimation(parent: _animController, curve: Curves.easeOutSine);
@@ -136,14 +136,24 @@ class _SearchBarState extends State<SearchBar>
                 )),
           ),
           Container(
-              width: _animation.value,
-              height: 50,
-              child: Padding(
-                  padding: const EdgeInsets.only(right: 10.0, bottom: 5.0),
-                  child: TextField(
-                    focusNode: _focusNode,
-                    style: TextStyle(color: Colors.black),
-                  ))),
+            width: _animation.value,
+            height: 50,
+            child: Padding(
+                padding: const EdgeInsets.only(right: 10.0, bottom: 5.0),
+                child: GestureDetector(
+                    onTap: () {
+                      final FocusScopeNode currentScope =
+                          FocusScope.of(context);
+                      if (!currentScope.hasPrimaryFocus &&
+                          currentScope.hasFocus) {
+                        FocusManager.instance.primaryFocus!.unfocus();
+                      }
+                    },
+                    child: TextField(
+                      focusNode: _focusNode,
+                      style: TextStyle(color: Colors.black),
+                    ))),
+          ),
         ]));
   }
 }
