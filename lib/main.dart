@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import './library-page.dart';
-import './search-bar.dart';
+import './models/music.dart';
+import './models/tab-item.dart';
+import 'pages/library-page.dart';
+import 'organisms/search-bar.dart';
+import 'pages/home-page.dart';
+import 'pages/settings-page.dart';
+import 'organisms/music-player.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,29 +18,44 @@ class _MyAppState extends State<MyApp> {
   int _navIndex = 0;
   final _titles = ['Home', 'Library', 'Settings'];
 
-  final List<TabItem> tabItems = [
-    TabItem(
-      'Home',
-      Icon(Icons.home),
-      Center(
-        child: Text(
-          'Home',
-          style: TextStyle(fontSize: 24.0),
-        ),
-      ),
-    ),
-    TabItem('Library', Icon(Icons.library_music), LibraryPage()),
-    TabItem(
-      'Settings',
-      Icon(Icons.settings),
-      Center(
-        child: Text(
-          'Settings',
-          style: TextStyle(fontSize: 24.0),
-        ),
-      ),
-    ),
-  ];
+  bool isPlayerShown = false;
+  Music playingMusic = Music(
+      id: "",
+      title: "",
+      artist: "",
+      duration: "",
+      progress: "",
+      img: "",
+      uri: "");
+
+  final List<TabItem> tabItems = [];
+
+  @override
+  void initState() {
+    tabItems.add(TabItem(
+        'Home',
+        Icon(Icons.home),
+        HomePage(
+          onPlayed: showPlayer,
+        )));
+    tabItems.add(TabItem('Library', Icon(Icons.library_music), LibraryPage()));
+    tabItems.add(TabItem('Settings', Icon(Icons.settings), SettingsPage()));
+
+    super.initState();
+  }
+
+  void showPlayer(Music music) {
+    setState(() {
+      playingMusic = music;
+      isPlayerShown = true;
+    });
+  }
+
+  void unshowPlayer() {
+    setState(() {
+      isPlayerShown = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,16 +99,13 @@ class _MyAppState extends State<MyApp> {
               },
               currentIndex: _navIndex,
             ),
-            body: tabItems[_navIndex].content,
+            body: Column(
+              children: [
+                Expanded(child: tabItems[_navIndex].content),
+                isPlayerShown ? MusicPlayer() : Container()
+              ],
+            ),
           ),
         ));
   }
-}
-
-class TabItem {
-  String txt;
-  Icon icon;
-  Widget content;
-
-  TabItem(this.txt, this.icon, this.content);
 }
