@@ -17,7 +17,6 @@ class _SearchBarState extends State<SearchBar>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     _animController =

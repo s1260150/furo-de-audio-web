@@ -18,15 +18,15 @@ class _MyAppState extends State<MyApp> {
   int _navIndex = 0;
   final _titles = ['Home', 'Library', 'Settings'];
 
-  bool isPlayerShown = false;
+  bool isPlayerShown = true;
   Music playingMusic = Music(
-      id: "",
-      title: "",
-      artist: "",
-      duration: "",
-      progress: "",
-      img: "",
-      uri: "");
+      id: "id",
+      title: "title",
+      artist: "artist",
+      duration: "194000",
+      progress: "progress",
+      img: "https://i.scdn.co/image/9f05124de35d807b78563ea2ca69550325081747",
+      uri: "uri");
 
   final List<TabItem> tabItems = [];
 
@@ -102,7 +102,15 @@ class _MyAppState extends State<MyApp> {
             body: Column(
               children: [
                 Expanded(child: tabItems[_navIndex].content),
-                isPlayerShown ? MusicPlayer() : Container()
+                isPlayerShown
+                    ? MusicPlayer(
+                        music: playingMusic,
+                        clear: () {
+                          setState(() {
+                            isPlayerShown = false;
+                          });
+                        })
+                    : Container()
               ],
             ),
           ),

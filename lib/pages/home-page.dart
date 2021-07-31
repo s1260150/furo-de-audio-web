@@ -63,7 +63,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         alignment: Alignment.topLeft,
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
         child: SingleChildScrollView(
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
